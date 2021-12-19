@@ -1,0 +1,28 @@
+{
+  "root": "apps/whnet-e2e",
+  "sourceRoot": "apps/whnet-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/whnet-e2e/cypress.json",
+        "devServerTarget": "whnet:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "whnet:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/whnet-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["whnet"]
+}

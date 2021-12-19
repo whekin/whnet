@@ -1,0 +1,71 @@
+{
+  "root": "apps/whnet",
+  "sourceRoot": "apps/whnet/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/whnet",
+        "index": "apps/whnet/src/index.html",
+        "baseHref": "/",
+        "main": "apps/whnet/src/main.tsx",
+        "polyfills": "apps/whnet/src/polyfills.ts",
+        "tsConfig": "apps/whnet/tsconfig.app.json",
+        "assets": ["apps/whnet/src/favicon.ico", "apps/whnet/src/assets"],
+        "styles": [],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/whnet/src/environments/environment.ts",
+              "with": "apps/whnet/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "options": {
+        "buildTarget": "whnet:build",
+        "hmr": true,
+        "proxyConfig": "apps/whnet/proxy.conf.json"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "whnet:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/whnet/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/whnet"],
+      "options": {
+        "jestConfig": "apps/whnet/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
