@@ -3,6 +3,7 @@
   "projects": {
     "api": "apps/api",
     "api-interfaces": "libs/api-interfaces",
+    "prisma-client": "libs/prisma-client",
     "whnet": "apps/whnet",
     "whnet-e2e": "apps/whnet-e2e"
   }

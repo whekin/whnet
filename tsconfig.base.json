@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@whnet/api-interfaces": ["libs/api-interfaces/src/index.ts"]
+      "@whnet/api-interfaces": ["libs/api-interfaces/src/index.ts"],
+      "@whnet/prisma-client": ["libs/prisma-client/src"]
     }
   },
   "exclude": ["node_modules", "tmp"]
