@@ -1,4 +1,4 @@
-import { PrismaClient } from '@whnet/prisma-client';
+import type { PrismaClient } from '@whnet/prisma-client';
 
 interface Context {
   prisma: PrismaClient;

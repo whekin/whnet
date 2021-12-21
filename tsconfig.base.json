@@ -16,7 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@whnet/data-access": ["libs/data-access/src/index.tsx"],
-      "@whnet/prisma-client": ["libs/prisma-client/src/index.js"],
+      "@whnet/prisma-client": ["libs/prisma-client/index.ts"],
       "@whnet/ui": ["libs/ui/src/index.ts"]
     }
   },
