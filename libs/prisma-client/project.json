@@ -17,6 +17,13 @@
         "jestConfig": "libs/prisma-client/jest.config.js",
         "passWithNoTests": true
       }
+    },
+    "generate-gql": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "yarn prisma generate",
+        "outputPath": "libs/prisma-client/src"
+      }
     }
   },
   "tags": []

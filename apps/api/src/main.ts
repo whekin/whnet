@@ -1,16 +1,18 @@
 import * as express from 'express';
-import { Message } from '@whnet/api-interfaces';
+
+import apolloServer from './graphql/server';
 
 const app = express();
 
-const greeting: Message = { message: 'Welcome to api!' };
+await apolloServer.start();
+apolloServer.applyMiddleware({ app });
 
-app.get('/api', (req, res) => {
-  res.send(greeting);
-});
+const port = process.env.PORT || 3333;
 
-const port = process.env.port || 3333;
 const server = app.listen(port, () => {
-  console.log('Listening at http://localhost:' + port + '/api');
+  // eslint-disable-next-line no-console
+  console.log(`Listening at http://localhost:${port}`);
 });
+
+// eslint-disable-next-line no-console
 server.on('error', console.error);

@@ -10,7 +10,15 @@
         "outputPath": "dist/apps/api",
         "main": "apps/api/src/main.ts",
         "tsConfig": "apps/api/tsconfig.app.json",
-        "assets": ["apps/api/src/assets"]
+        "webpackConfig": "apps/api/webpack.config.ts",
+        "assets": [
+          "apps/api/src/assets",
+          {
+            "glob": "schema.prisma",
+            "input": "libs/prisma-client/prisma",
+            "output": "."
+          }
+        ]
       },
       "configurations": {
         "production": {
@@ -45,6 +53,13 @@
       "options": {
         "jestConfig": "apps/api/jest.config.js",
         "passWithNoTests": true
+      }
+    },
+    "generate-gql": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "yarn ts-node --project ./tsconfig.base.json --compiler-options '{\"module\":\"CommonJS\"}' --transpile-only apps/api/src/graphql/schema",
+        "outputPath": "apps/api/src/generated"
       }
     }
   },

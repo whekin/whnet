@@ -2,9 +2,10 @@
   "version": 2,
   "projects": {
     "api": "apps/api",
-    "api-interfaces": "libs/api-interfaces",
-    "prisma-client": "libs/prisma-client",
     "whnet": "apps/whnet",
-    "whnet-e2e": "apps/whnet-e2e"
+    "whnet-e2e": "apps/whnet-e2e",
+    "prisma-client": "libs/prisma-client",
+    "data-access": "libs/data-access",
+    "ui": "libs/ui"
   }
 }

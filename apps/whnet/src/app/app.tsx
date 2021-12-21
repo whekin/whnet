@@ -1,28 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { Message } from '@whnet/api-interfaces';
+import React from 'react';
+import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
+import fetch from 'cross-fetch';
 
-export const App = () => {
-  const [m, setMessage] = useState<Message>({ message: '' });
+import { Login } from '@whnet/ui';
 
-  useEffect(() => {
-    fetch('/api')
-      .then((r) => r.json())
-      .then(setMessage);
-  }, []);
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: createHttpLink({
+    fetch,
+    // eslint-disable-next-line @typescript-eslint/dot-notation
+    uri: process.env['NX_GRAPHQL_ENDPOINT_URI'],
+  }),
+});
 
-  return (
-    <>
-      <div style={{ textAlign: 'center' }}>
-        <h1>Welcome to whnet!</h1>
-        <img
-          width="450"
-          src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png"
-          alt="Nx - Smart, Fast and Extensible Build System"
-        />
-      </div>
-      <div>{m.message}</div>
-    </>
-  );
-};
+const App = () => (
+  <ApolloProvider client={client}>
+    <h1>Whnet</h1>
+    <Login />
+  </ApolloProvider>
+);
 
 export default App;

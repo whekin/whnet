@@ -1,0 +1,31 @@
+{
+  "root": "libs/data-access",
+  "sourceRoot": "libs/data-access/src",
+  "projectType": "library",
+  "tags": [],
+  "implicitDependencies": ["api"],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/data-access/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/data-access"],
+      "options": {
+        "jestConfig": "libs/data-access/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "generate-gql": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "yarn graphql-codegen --config libs/data-access/codegen.yml",
+        "outputPath": "libs/data-access/src"
+      }
+    }
+  }
+}
