@@ -6,7 +6,7 @@ import schema from './schema';
 import type Context from './context';
 
 const server = new ApolloServer({
-  schema,
+  schema: await schema,
   context: (): Context => ({
     prisma,
   }),

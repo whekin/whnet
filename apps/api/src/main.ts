@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import * as express from 'express';
 
 import apolloServer from './graphql/server';

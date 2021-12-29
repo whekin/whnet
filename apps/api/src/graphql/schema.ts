@@ -1,13 +1,16 @@
-import { makeSchema } from 'nexus';
-import * as path from 'path';
+import 'reflect-metadata';
+import { buildSchema } from 'type-graphql';
+import { join } from 'path';
+import { resolvers } from '../generated/type-graphql/index';
 
-import userTypes from './user';
-
-const schema = makeSchema({
-  outputs: {
-    schema: path.join(__dirname, '../generated/schema.graphql'),
+const schema = buildSchema({
+  resolvers,
+  validate: false,
+  emitSchemaFile: {
+    path: join(__dirname, '../generated/schema.graphql'),
+    commentDescriptions: true,
+    sortedSchema: false,
   },
-  types: [userTypes],
 });
 
 export default schema;

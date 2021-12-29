@@ -1,13 +1,12 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src"
 }
 
-generator nexusPrisma {
-  provider = "nexus-prisma"
+generator typegraphql {
+  provider = "typegraphql-prisma"
+  output             = "../../../apps/api/src/generated/type-graphql"
+  emitTranspiledCode = true
 }
 
 datasource db {
@@ -16,7 +15,9 @@ datasource db {
 }
 
 model User {
+  /// @TypeGraphQL.omit(input: true)
   id        String   @id @default(cuid())
+  /// @TypeGraphQL.omit(input: true)
   createdAt DateTime @default(now())
   nickname  String   @unique
 }
