@@ -1,7 +1,8 @@
 import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
 import { join } from 'path';
-import { resolvers } from '../generated/type-graphql/index';
+
+import { resolvers } from '../generated/type-graphql';
 
 const schema = buildSchema({
   resolvers,

@@ -12,6 +12,7 @@ const createUser = async (nickname: string) =>
   prisma.user.create({
     data: {
       nickname,
+      password: '',
     },
   });
 

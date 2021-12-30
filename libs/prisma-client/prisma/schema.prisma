@@ -4,7 +4,7 @@ generator client {
 }
 
 generator typegraphql {
-  provider = "typegraphql-prisma"
+  provider           = "typegraphql-prisma"
   output             = "../../../apps/api/src/generated/type-graphql"
   emitTranspiledCode = true
 }
@@ -15,9 +15,31 @@ datasource db {
 }
 
 model User {
-  /// @TypeGraphQL.omit(input: true)
-  id        String   @id @default(cuid())
-  /// @TypeGraphQL.omit(input: true)
-  createdAt DateTime @default(now())
-  nickname  String   @unique
+  id        String    @id @default(cuid())
+  nickname  String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  password  String
+  chats     Chat[]
+  messages  Message[]
+}
+
+model Chat {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  messages  Message[]
+  users     User[]
+}
+
+model Message {
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  content      String
+  chat         Chat     @relation(fields: [chatId], references: [id])
+  chatId       String
+  sentBy       User     @relation(fields: [userId], references: [id])
+  userId String
+
+  @@id([userId, chatId, createdAt])
 }
