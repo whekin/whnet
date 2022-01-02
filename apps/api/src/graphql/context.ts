@@ -1,7 +1,21 @@
+import type { ExpressContext } from 'apollo-server-express';
+
 import type { PrismaClient } from '@whnet/prisma-client';
 
-interface Context {
+import prisma from './prisma';
+
+export interface Context {
   prisma: PrismaClient;
+  user: any;
 }
 
-export default Context;
+const context = ({ req }: ExpressContext): Context => {
+  const user = req.user || null;
+
+  return {
+    prisma,
+    user,
+  };
+};
+
+export default context;

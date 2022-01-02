@@ -36,16 +36,15 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "extends": [
-        "plugin:@nrwl/nx/typescript",
-        "airbnb-typescript",
-        "plugin:@typescript-eslint/recommended"
-      ],
-      "rules": {}
+      "extends": ["airbnb-typescript", "airbnb-typescript-prettier"],
+      "rules": {
+        "class-methods-use-this": "off",
+        "max-classes-per-file": "off"
+      }
     },
     {
       "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nrwl/nx/javascript"],
+      "extends": [],
       "rules": {}
     }
   ]
