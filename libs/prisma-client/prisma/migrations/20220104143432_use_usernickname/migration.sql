@@ -17,7 +17,7 @@ CREATE TABLE "new_Message" (
 
     PRIMARY KEY ("userNickname", "chatId", "createdAt"),
     CONSTRAINT "Message_chatId_fkey" FOREIGN KEY ("chatId") REFERENCES "Chat" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Message_userNickname_fkey" FOREIGN KEY ("userNickname") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Message_userNickname_fkey" FOREIGN KEY ("userNickname") REFERENCES "User" ("nickname") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 INSERT INTO "new_Message" ("chatId", "content", "createdAt", "updatedAt") SELECT "chatId", "content", "createdAt", "updatedAt" FROM "Message";
 DROP TABLE "Message";
