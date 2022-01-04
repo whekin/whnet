@@ -13,8 +13,8 @@ import { sign } from 'jsonwebtoken';
 import { hash, verify } from 'argon2';
 import { AuthenticationError } from 'apollo-server-errors';
 
-import type { Context } from './context';
-import { User } from '../generated/type-graphql';
+import type { Context } from '../context';
+import { User } from '../../generated/type-graphql';
 
 const MIN_NICKNAME_LENGTH = 3;
 const MIN_PASSWORD_LENGTH = 8;

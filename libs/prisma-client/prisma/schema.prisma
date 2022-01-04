@@ -19,6 +19,7 @@ model User {
   nickname  String    @unique
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  /// @TypeGraphQL.omit(output: true)
   password  String
   chats     Chat[]
   messages  Message[]
