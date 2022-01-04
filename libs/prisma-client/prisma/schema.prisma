@@ -38,8 +38,8 @@ model Message {
   content      String
   chat         Chat     @relation(fields: [chatId], references: [id])
   chatId       String
-  sentBy       User     @relation(fields: [userId], references: [id])
-  userId String
+  sentBy       User     @relation(fields: [userNickname], references: [id])
+  userNickname String
 
-  @@id([userId, chatId, createdAt])
+  @@id([userNickname, chatId, createdAt])
 }
