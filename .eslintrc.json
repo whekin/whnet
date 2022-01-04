@@ -23,15 +23,7 @@
               }
             ]
           }
-        ],
-        "react/function-component-definition": [
-          2,
-          {
-            "namedComponents": "arrow-function",
-            "unnamedComponents": "arrow-function"
-          }
-        ],
-        "import/no-named-as-default": "off"
+        ]
       }
     },
     {
@@ -39,7 +31,18 @@
       "extends": ["airbnb-typescript", "airbnb-typescript-prettier"],
       "rules": {
         "class-methods-use-this": "off",
-        "max-classes-per-file": "off"
+        "max-classes-per-file": "off",
+        "react/function-component-definition": [
+          2,
+          {
+            "namedComponents": "arrow-function",
+            "unnamedComponents": "arrow-function"
+          }
+        ],
+        "import/no-named-as-default": "off",
+        "dot-notation": "off",
+        "@typescript-eslint/dot-notation": "off",
+        "import/no-unresolved": "off"
       }
     },
     {
