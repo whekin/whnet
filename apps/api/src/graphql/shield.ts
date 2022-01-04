@@ -28,8 +28,7 @@ const map: IRules = {
   },
   Mutation: {
     '*': isAuthenticated,
-    login: allow,
-    signUp: not(isAuthenticated),
+    loginOrSignUp: not(isAuthenticated),
   },
   Message: isMessageOwner,
   Chat: isChatOwner,

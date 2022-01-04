@@ -8,7 +8,7 @@ import {
   Ctx,
   ObjectType,
 } from 'type-graphql';
-import { Length, Matches } from 'class-validator';
+import { length, Length, Matches } from 'class-validator';
 import { sign } from 'jsonwebtoken';
 import { hash, verify } from 'argon2';
 import { AuthenticationError } from 'apollo-server-errors';
@@ -61,65 +61,43 @@ class UserBaseCredentials implements Partial<User> {
 }
 
 @InputType()
-class SignUpInput extends UserBaseCredentials {}
+class LoginOrSignUpInput extends UserBaseCredentials {}
 
-@InputType()
-class LoginInput extends UserBaseCredentials {}
-
-@ObjectType('SignUpOutput', {
+@ObjectType('AuthOutput', {
   isAbstract: true,
 })
-class SignUpOutput extends User {
+class AuthOutput extends User {
   @Field((type) => String)
   token: string;
 }
 
 @Resolver()
 class AuthResolver {
-  @Mutation((returns) => String)
-  async login(
-    @Arg('data') { nickname, password }: LoginInput,
+  @Mutation((returns) => AuthOutput)
+  async loginOrSignUp(
+    @Arg('data') { nickname, password }: LoginOrSignUpInput,
     @Ctx() ctx: Context
   ) {
-    const user = await ctx.prisma.user.findUnique({
+    let user = await ctx.prisma.user.findUnique({
       where: { nickname },
-      select: {
-        password: true,
-      },
     });
-
-    if (!user) {
-      throw new AuthenticationError(wrongDataProvidedMessage);
-    }
-
-    const passwordMatch = await verify(user.password, password);
-
-    if (!passwordMatch) {
-      throw new AuthenticationError(wrongDataProvidedMessage);
-    }
-
-    return getToken(nickname);
-  }
-
-  @Mutation((returns) => SignUpOutput)
-  async signUp(
-    @Arg('data') { nickname, password }: SignUpInput,
-    @Ctx() ctx: Context
-  ) {
-    const userExists = await ctx.prisma.user.count({ where: { nickname } });
-
-    if (userExists) {
-      throw new AuthenticationError(wrongDataProvidedMessage);
-    }
 
     const hashedPassword = await hash(password);
 
-    const user = await ctx.prisma.user.create({
-      data: {
-        nickname,
-        password: hashedPassword,
-      },
-    });
+    if (user) {
+      const passwordMatch = await verify(user.password, password);
+
+      if (!passwordMatch) {
+        throw new AuthenticationError(wrongDataProvidedMessage);
+      }
+    } else {
+      user = await ctx.prisma.user.create({
+        data: {
+          nickname,
+          password: hashedPassword,
+        },
+      });
+    }
 
     const token = getToken(nickname);
 
