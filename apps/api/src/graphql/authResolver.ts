@@ -106,10 +106,7 @@ class AuthResolver {
     @Arg('data') { nickname, password }: SignUpInput,
     @Ctx() ctx: Context
   ) {
-    const userExists = !!(await ctx.prisma.user.findUnique({
-      where: { nickname },
-      select: {},
-    }));
+    const userExists = await ctx.prisma.user.count({ where: { nickname } });
 
     if (userExists) {
       throw new AuthenticationError(wrongDataProvidedMessage);

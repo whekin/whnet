@@ -8,7 +8,7 @@ import apolloServer from './graphql/server';
 const app = express();
 app.use(
   expressJwt({
-    secret: process.env.JTW_SECRET,
+    secret: process.env.JWT_SECRET,
     algorithms: ['HS256'],
     credentialsRequired: false,
   })
