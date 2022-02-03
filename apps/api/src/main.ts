@@ -1,11 +1,19 @@
 import 'reflect-metadata';
 
+import { createServer } from 'http';
+import { ApolloServer } from 'apollo-server-express';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
 import * as express from 'express';
 import expressJwt from 'express-jwt';
+import { execute, subscribe } from 'graphql';
+import { applyMiddleware } from 'graphql-middleware';
 
-import apolloServer from './graphql/server';
+import { schema, context, permissions } from './graphql';
+
+const schemaWithPermissions = applyMiddleware(await schema, permissions);
 
 const app = express();
+
 app.use(
   expressJwt({
     secret: process.env.JWT_SECRET,
@@ -14,16 +22,46 @@ app.use(
   })
 );
 
-await apolloServer.start();
+const httpServer = createServer(app);
 
+const subscriptionServer = SubscriptionServer.create(
+  {
+    schema: await schema,
+    execute,
+    subscribe,
+    onConnect(connectionParams, webSocket, ctx) {
+      // NOT IMPLEMENTED YET
+      if (connectionParams.authorization) {
+        return {};
+      }
+      throw new Error('Missing auth token!');
+    },
+  },
+  { server: httpServer, path: '/graphql' }
+);
+
+const apolloServer = new ApolloServer({
+  schema: schemaWithPermissions,
+  context,
+  plugins: [
+    {
+      async serverWillStart() {
+        return {
+          async drainServer() {
+            subscriptionServer.close();
+          },
+        };
+      },
+    },
+  ],
+});
+
+await apolloServer.start();
 apolloServer.applyMiddleware({ app });
 
-const port = process.env.PORT || 3333;
+const port = process.env.PORT;
 
-const server = app.listen(port, () => {
+httpServer.listen(port, () => {
   // eslint-disable-next-line no-console
   console.log(`Listening at http://localhost:${port}/graphql`);
 });
-
-// eslint-disable-next-line no-console
-server.on('error', console.error);

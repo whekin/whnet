@@ -1,0 +1,10 @@
+mutation LoginOrSignUp($nickname: String!, $password: String!) {
+    loginOrSignUp(
+        data: {
+            nickname: $nickname
+            password: $password
+        }
+    ) {
+        token
+    }
+}

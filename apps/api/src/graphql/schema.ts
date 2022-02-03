@@ -13,13 +13,17 @@ import {
   FindUniqueChatResolver,
   FindUniqueMessageResolver,
   FindUniqueUserResolver,
+  CreateChatResolver,
   MessageRelationsResolver,
   UserRelationsResolver,
 } from '../generated/type-graphql';
-import AuthResolver from './resolvers/auth';
-import MessageResolver from './resolvers/message';
+import {
+  AuthResolver,
+  MessageResolver,
+  SubscriptionsResolver,
+} from './resolvers';
 
-const schema = buildSchema({
+export const schema = buildSchema({
   resolvers: [
     FindUniqueChatResolver,
     FindFirstChatResolver,
@@ -32,9 +36,11 @@ const schema = buildSchema({
     FindManyMessageResolver,
     UserRelationsResolver,
     ChatRelationsResolver,
+    CreateChatResolver,
     MessageRelationsResolver,
     AuthResolver,
     MessageResolver,
+    SubscriptionsResolver,
   ],
   validate: true,
   emitSchemaFile: {

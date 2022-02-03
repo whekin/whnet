@@ -1,0 +1,13 @@
+mutation CreateChat($participant1: String, $participant2: String) {
+  createChat(data: {
+    users: {
+      connect: [{
+      	nickname: $participant1
+      }, {
+        nickname: $participant2
+      }]
+    }
+  }) {
+    id
+  }
+}

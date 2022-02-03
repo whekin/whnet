@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Arg,
   InputType,
@@ -8,7 +7,7 @@ import {
   Ctx,
   ObjectType,
 } from 'type-graphql';
-import { length, Length, Matches } from 'class-validator';
+import { Length, Matches } from 'class-validator';
 import { sign } from 'jsonwebtoken';
 import { hash, verify } from 'argon2';
 import { AuthenticationError } from 'apollo-server-errors';
@@ -72,7 +71,7 @@ class AuthOutput extends User {
 }
 
 @Resolver()
-class AuthResolver {
+export class AuthResolver {
   @Mutation((returns) => AuthOutput)
   async loginOrSignUp(
     @Arg('data') { nickname, password }: LoginOrSignUpInput,

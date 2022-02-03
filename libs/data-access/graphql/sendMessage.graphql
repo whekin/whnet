@@ -1,0 +1,11 @@
+mutation SendMessage($content: String!, $chatId: String!) {
+  sendMessage(data: {
+    content: $content
+    chatId: $chatId
+  }) {
+    content
+    chatId
+    createdAt
+    userNickname
+  }
+}

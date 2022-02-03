@@ -1,0 +1,14 @@
+query Chat($id: String, $take: Int, $skip: Int) {
+  chats(where: { id: { equals: $id } }) {
+    id
+    users {
+      nickname
+    }
+    messages(orderBy: { createdAt: desc }, take: $take, skip: $skip) {
+      chatId
+      content
+      createdAt
+      userNickname
+    }
+  }
+}

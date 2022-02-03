@@ -1,0 +1,9 @@
+query FindUserNickname($nickname: String) {
+    findFirstUser(where: {
+        nickname: {
+            equals: $nickname
+        }
+    }) {
+        nickname
+    }
+}

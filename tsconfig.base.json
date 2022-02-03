@@ -15,9 +15,12 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@whnet/context": ["libs/context/src/index.ts"],
       "@whnet/data-access": ["libs/data-access/src/index.tsx"],
+      "@whnet/helpers": ["libs/helpers/src/index.ts"],
       "@whnet/prisma-client": ["libs/prisma-client/index.ts"],
-      "@whnet/ui": ["libs/ui/src/index.ts"]
+      "@whnet/ui": ["libs/ui/src/index.ts"],
+      "@whnet/validation": ["libs/validation/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

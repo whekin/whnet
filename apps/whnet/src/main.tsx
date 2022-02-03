@@ -1,11 +1,19 @@
 import React, { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { ApolloProvider } from '@apollo/client';
 
-import App from './app/app';
+import client from './client/client';
+
+import App from './app/App';
 
 ReactDOM.render(
   <StrictMode>
-    <App />
+    <ApolloProvider client={client}>
+      <Router>
+        <App />
+      </Router>
+    </ApolloProvider>
   </StrictMode>,
-  document.getElementById('root'),
+  document.getElementById('root')
 );

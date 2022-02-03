@@ -2,10 +2,13 @@
   "version": 2,
   "projects": {
     "api": "apps/api",
-    "whnet": "apps/whnet",
-    "whnet-e2e": "apps/whnet-e2e",
-    "prisma-client": "libs/prisma-client",
+    "context": "libs/context",
     "data-access": "libs/data-access",
-    "ui": "libs/ui"
+    "helpers": "libs/helpers",
+    "prisma-client": "libs/prisma-client",
+    "ui": "libs/ui",
+    "validation": "libs/validation",
+    "whnet": "apps/whnet",
+    "whnet-e2e": "apps/whnet-e2e"
   }
 }
