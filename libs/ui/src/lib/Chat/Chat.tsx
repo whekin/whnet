@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   Box,
   Typography,
@@ -8,7 +8,13 @@ import {
   ListItem,
   ListItemText,
   CircularProgress,
+  AppBar,
+  Toolbar,
+  IconButton,
 } from '@mui/material';
+import { useUserAuthNickname } from '@whnet/helpers';
+
+import { ArrowBack } from '@mui/icons-material';
 
 import {
   useChatQuery,
@@ -23,6 +29,9 @@ const LOAD_MORE_MESSAGES_AMOUNT = 10;
 
 export const Chat = () => {
   const { chatId: id } = useParams() as { chatId: string };
+  const navigate = useNavigate();
+
+  const currentUserNickname = useUserAuthNickname();
 
   const [containerTarget, setContainerTarget] = useState<
     HTMLElement | undefined
@@ -140,6 +149,27 @@ export const Chat = () => {
 
   return (
     <Box>
+      <AppBar position="sticky" sx={{ display: { sm: 'none' } }}>
+        <Toolbar>
+          <IconButton
+            size="medium"
+            edge="start"
+            color="inherit"
+            sx={{ mr: 2 }}
+            onClick={() => navigate('/chats')}
+          >
+            <ArrowBack />
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            {
+              // TODO: use global store
+              chat?.users.filter(
+                ({ nickname }) => nickname !== currentUserNickname
+              )[0].nickname
+            }
+          </Typography>
+        </Toolbar>
+      </AppBar>
       {!chat?.messages.length && !loading && (
         <Box
           sx={{

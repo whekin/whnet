@@ -40,7 +40,7 @@ export const MessageSender = ({ chatId }: MessageSenderProps) => {
       elevation={12}
       sx={{
         position: 'fixed',
-        width: 'calc(100% - 350px)',
+        width: { sm: 'calc(100% - 350px)', xs: '100%' },
         bottom: 0,
         top: 'auto',
         p: '2px 4px',

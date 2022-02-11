@@ -218,7 +218,9 @@ export const SideBar = () => {
   const logout = useLogout();
 
   return (
-    <Box sx={{ width: 350, flexShrink: 0, height: '100vh', overflowY: 'auto' }}>
+    <Box
+      sx={{ width: '100%', flexShrink: 0, height: '100vh', overflowY: 'auto' }}
+    >
       <Chats />
       <Button onClick={logout}>Logout</Button>
     </Box>
