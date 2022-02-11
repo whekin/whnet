@@ -1,29 +1,21 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {
   Box,
   Typography,
   Divider,
   List,
-  ListItem,
-  ListItemText,
-  ListSubheader,
   CircularProgress,
-  AppBar,
-  Toolbar,
-  IconButton,
 } from '@mui/material';
 import { useUserAuthNickname } from '@whnet/helpers';
 
-import { ArrowBack } from '@mui/icons-material';
-
 import {
-  ChatQuery,
   useChatQuery,
   NewMessageDocument,
   NewMessageSubscription,
 } from '@whnet/data-access';
 
+import AppBar from '../AppBar/AppBar';
 import Message, { UnitedMessages } from '../Message/Message';
 import MessageSender from '../MessageSender/MessageSender';
 import EmptyChat from './EmptyChat';
@@ -33,7 +25,6 @@ const LOAD_MORE_MESSAGES_AMOUNT = 10;
 
 export const Chat = () => {
   const { chatId: id } = useParams() as { chatId: string };
-  const navigate = useNavigate();
 
   const currentUserNickname = useUserAuthNickname();
 
@@ -173,30 +164,16 @@ export const Chat = () => {
     [chat]
   );
 
+  const openedChatOpponentNickname = chat?.users.filter(
+    ({ nickname }) => nickname !== currentUserNickname
+  )[0].nickname;
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-      <AppBar position="static" sx={{ display: { sm: 'none' } }}>
-        <Toolbar>
-          <IconButton
-            size="medium"
-            edge="start"
-            color="inherit"
-            sx={{ mr: 2 }}
-            onClick={() => navigate('/chats')}
-          >
-            <ArrowBack />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {
-              // TODO: use global store
-              chat?.users.filter(
-                ({ nickname }) => nickname !== currentUserNickname
-              )[0].nickname
-            }
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      {!chat?.messages.length && !loading && <EmptyChat />}
+      <Box sx={{ display: { sm: 'none' } }}>
+        <AppBar nickname={openedChatOpponentNickname || 'Loading chat...'} />
+      </Box>
+      {!unitedMessages?.length && !loading && <EmptyChat />}
       <List
         sx={{
           flexGrow: 1,
