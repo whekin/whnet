@@ -179,6 +179,7 @@ export const Chat = () => {
           flexGrow: 1,
           overflowY: 'auto',
           paddingBottom: 2,
+          paddingTop: 0,
           display: 'flex',
           flexDirection: 'column-reverse',
         }}
@@ -203,8 +204,7 @@ export const Chat = () => {
           <>
             <Divider variant="middle" component="li" />
             <Typography
-              sx={{ textAlign: 'center' }}
-              gutterBottom
+              sx={{ textAlign: 'center', p: 2 }}
               variant="body1"
               component="h3"
             >
