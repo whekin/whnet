@@ -148,7 +148,7 @@ export const Chat = () => {
         const lastEntry = prev[prev.length - 1];
 
         if (lastEntry?.userNickname === curr.userNickname) {
-          lastEntry.messages.push(curr);
+          lastEntry.messages.unshift(curr);
 
           return prev;
         }
