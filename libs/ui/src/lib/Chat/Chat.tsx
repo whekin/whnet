@@ -200,7 +200,7 @@ export const Chat = () => {
             <CircularProgress />
           </Box>
         )}
-        {loadedAllMessages && (
+        {loadedAllMessages && !!unitedMessages?.length && (
           <>
             <Divider variant="middle" component="li" />
             <Typography
