@@ -148,8 +148,8 @@ export const Chat = () => {
   const chat = data?.chats[0];
 
   return (
-    <Box>
-      <AppBar position="sticky" sx={{ display: { sm: 'none' } }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+      <AppBar position="static" sx={{ display: { sm: 'none' } }}>
         <Toolbar>
           <IconButton
             size="medium"
@@ -186,9 +186,9 @@ export const Chat = () => {
       )}
       <List
         sx={{
-          height: 'calc(100vh - 48px)',
+          flexGrow: 1,
           overflowY: 'auto',
-          paddingBottom: 20,
+          paddingBottom: 2,
           display: 'flex',
           flexDirection: 'column-reverse',
         }}
