@@ -24,7 +24,9 @@ import {
   NewMessageSubscription,
 } from '@whnet/data-access';
 
+import Message, { UnitedMessages } from '../Message/Message';
 import MessageSender from '../MessageSender/MessageSender';
+import EmptyChat from './EmptyChat';
 
 const INITIAL_LOAD_MESSAGES_AMOUNT = 20;
 const LOAD_MORE_MESSAGES_AMOUNT = 10;
@@ -149,12 +151,6 @@ export const Chat = () => {
 
   const chat = data?.chats[0];
 
-  type UnitedMessages = {
-    userNickname: string;
-    messages: ChatQuery['chats'][0]['messages'];
-    firstMessageCreatedAt: string;
-  };
-
   const unitedMessages = useMemo(
     () =>
       chat?.messages.reduce((prev: UnitedMessages[], curr) => {
@@ -200,20 +196,7 @@ export const Chat = () => {
           </Typography>
         </Toolbar>
       </AppBar>
-      {!chat?.messages.length && !loading && (
-        <Box
-          sx={{
-            pt: 3,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Typography variant="h4" component="h2">
-            Send first message!
-          </Typography>
-        </Box>
-      )}
+      {!chat?.messages.length && !loading && <EmptyChat />}
       <List
         sx={{
           flexGrow: 1,
@@ -225,25 +208,9 @@ export const Chat = () => {
         ref={(node) => node && setContainerTarget(node)}
         onScroll={handleScroll}
       >
-        {unitedMessages?.map(
-          ({ userNickname, messages, firstMessageCreatedAt }) => {
-            return (
-              <List
-                key={firstMessageCreatedAt}
-                subheader={<ListSubheader>{userNickname}</ListSubheader>}
-              >
-                {messages.map(({ content, createdAt }) => (
-                  <ListItem
-                    key={createdAt}
-                    sx={{ bgcolor: 'background.paper' }}
-                  >
-                    <ListItemText primary={content} />
-                  </ListItem>
-                ))}
-              </List>
-            );
-          }
-        )}
+        {unitedMessages?.map((message) => (
+          <Message key={message.firstMessageCreatedAt} message={message} />
+        ))}
         {loading && (
           <Box
             sx={{
