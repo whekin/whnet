@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -7,6 +7,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  ListSubheader,
   CircularProgress,
   AppBar,
   Toolbar,
@@ -17,6 +18,7 @@ import { useUserAuthNickname } from '@whnet/helpers';
 import { ArrowBack } from '@mui/icons-material';
 
 import {
+  ChatQuery,
   useChatQuery,
   NewMessageDocument,
   NewMessageSubscription,
@@ -147,6 +149,34 @@ export const Chat = () => {
 
   const chat = data?.chats[0];
 
+  type UnitedMessages = {
+    userNickname: string;
+    messages: ChatQuery['chats'][0]['messages'];
+    firstMessageCreatedAt: string;
+  };
+
+  const unitedMessages = useMemo(
+    () =>
+      chat?.messages.reduce((prev: UnitedMessages[], curr) => {
+        const lastEntry = prev[prev.length - 1];
+
+        if (lastEntry?.userNickname === curr.userNickname) {
+          lastEntry.messages.push(curr);
+
+          return prev;
+        }
+
+        prev.push({
+          userNickname: curr.userNickname,
+          messages: [curr],
+          firstMessageCreatedAt: curr.createdAt,
+        });
+
+        return prev;
+      }, []),
+    [chat]
+  );
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
       <AppBar position="static" sx={{ display: { sm: 'none' } }}>
@@ -195,13 +225,25 @@ export const Chat = () => {
         ref={(node) => node && setContainerTarget(node)}
         onScroll={handleScroll}
       >
-        {chat?.messages.map(({ content, userNickname, createdAt }) => {
-          return (
-            <ListItem key={createdAt} sx={{ bgcolor: 'background.paper' }}>
-              <ListItemText primary={userNickname} secondary={content} />
-            </ListItem>
-          );
-        })}
+        {unitedMessages?.map(
+          ({ userNickname, messages, firstMessageCreatedAt }) => {
+            return (
+              <List
+                key={firstMessageCreatedAt}
+                subheader={<ListSubheader>{userNickname}</ListSubheader>}
+              >
+                {messages.map(({ content, createdAt }) => (
+                  <ListItem
+                    key={createdAt}
+                    sx={{ bgcolor: 'background.paper' }}
+                  >
+                    <ListItemText primary={content} />
+                  </ListItem>
+                ))}
+              </List>
+            );
+          }
+        )}
         {loading && (
           <Box
             sx={{
