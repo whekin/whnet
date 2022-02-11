@@ -22,7 +22,7 @@ export const useUserAuthNickname = () => {
     return nickname;
   }
 
-  throw new Error('No token. Cannot exclude username');
+  return null;
 };
 
 export const getBearerToken = () => {
