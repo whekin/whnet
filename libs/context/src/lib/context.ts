@@ -1,11 +1,11 @@
 import { createContext } from 'react';
 
 export interface Context {
-  userNickname: string;
+  userNickname: string | null;
 }
 
 export const defaultContext: Context = {
-  userNickname: '',
+  userNickname: null,
 };
 
 export default createContext(defaultContext);
