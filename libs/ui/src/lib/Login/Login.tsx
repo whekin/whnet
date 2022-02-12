@@ -11,7 +11,6 @@ import {
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Visibility from '@mui/icons-material/Visibility';
@@ -80,8 +79,6 @@ export const Login = () => {
     resolver: yupResolver(validationSchema),
   });
   const showNickname = watch('nickname');
-
-  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<FormValues> = async (submitData) => {
     const { nickname, password } = submitData;

@@ -21,7 +21,7 @@ const mobileLayout = (chatId: string | undefined) => {
 
 const desktopLayout = (
   <Box sx={{ display: 'flex' }}>
-    <Box sx={{ width: 350 }}>
+    <Box sx={{ width: 300, flexShrink: 0 }}>
       <SideBar />
     </Box>
     <Box sx={{ width: '100%' }}>
