@@ -1,4 +1,4 @@
-query FindUserNickname($nickname: String) {
+query FindUserNickname($nickname: String!) {
     findFirstUser(where: {
         nickname: {
             equals: $nickname

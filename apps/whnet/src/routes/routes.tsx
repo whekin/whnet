@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
-import { AppContext } from '@whnet/context';
+import { useUserAuthNickname } from '@whnet/helpers';
 import { LoginPage, Chat, Ui, ChatIntroduction } from '@whnet/ui';
 
 const RequireAuth = ({ children }: { children: JSX.Element }) => {
-  const { userNickname } = useContext(AppContext);
+  const userNickname = useUserAuthNickname();
   const location = useLocation();
 
   if (!userNickname) {

@@ -24,7 +24,7 @@ import {
   useSearchUsersLazyQuery,
   useCreateChatMutation,
 } from '@whnet/data-access';
-import { AppContext } from '@whnet/context';
+import { useUserNickname } from '@whnet/context';
 import { useLogout } from '@whnet/helpers';
 
 const ChatPreviewLastMessage = ({ chat }: any) => {
@@ -60,7 +60,7 @@ const ChatPreviewLastMessage = ({ chat }: any) => {
 
 export const Chats = () => {
   const navigate = useNavigate();
-  const { userNickname } = useContext(AppContext);
+  const userNickname = useUserNickname()!;
   const [searchUsers, { data: searchData, loading: searchLoading }] =
     useSearchUsersLazyQuery();
   const { loading, data, error } = useUserQuery({

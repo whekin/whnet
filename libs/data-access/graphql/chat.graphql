@@ -1,4 +1,4 @@
-query Chat($id: String, $take: Int, $skip: Int) {
+query Chat($id: String!, $take: Int!, $skip: Int!) {
   chats(where: { id: { equals: $id } }) {
     id
     users {

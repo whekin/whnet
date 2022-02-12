@@ -2,19 +2,13 @@ import React, { useMemo } from 'react';
 import { CssBaseline } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
 
-import { AppContext } from '@whnet/context';
-
-import { useUserAuthNickname } from '@whnet/helpers';
+import { AppContextProvider } from '@whnet/context';
 
 import AppRoutes from '../routes/routes';
 
 const App = () => {
-  const nickname = useUserAuthNickname();
-
-  const value = useMemo(() => ({ userNickname: nickname }), [nickname]);
-
   return (
-    <AppContext.Provider value={value}>
+    <AppContextProvider>
       <SnackbarProvider
         maxSnack={3}
         anchorOrigin={{
@@ -25,7 +19,7 @@ const App = () => {
         <CssBaseline />
         <AppRoutes />
       </SnackbarProvider>
-    </AppContext.Provider>
+    </AppContextProvider>
   );
 };
 

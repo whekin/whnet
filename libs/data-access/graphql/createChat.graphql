@@ -1,4 +1,4 @@
-mutation CreateChat($participant1: String, $participant2: String) {
+mutation CreateChat($participant1: String!, $participant2: String!) {
   createChat(data: {
     users: {
       connect: [{

@@ -1,4 +1,4 @@
-query User($nickname: String) {
+query User($nickname: String!) {
   user(where: { nickname: $nickname}) {
     nickname
     chats {

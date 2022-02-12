@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { DateTime } from 'luxon';
 import {
   List,
@@ -11,7 +11,7 @@ import {
 import { useTheme } from '@mui/material/styles';
 
 import { ChatQuery } from '@whnet/data-access';
-import { useUserAuthNickname } from '@whnet/helpers';
+import { useUserNickname } from '@whnet/context';
 
 const MessageSentDate = (createdAt: string) => (
   <time dateTime={createdAt}>{DateTime.fromISO(createdAt).toRelative()}</time>
@@ -37,7 +37,7 @@ const opponentMessageStyles = {
 export const Message = ({
   message: { firstMessageCreatedAt, userNickname, messages },
 }: MessageProps) => {
-  const currentUserNickname = useUserAuthNickname();
+  const currentUserNickname = useUserNickname();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 

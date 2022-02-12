@@ -1,4 +1,4 @@
-query SearchUsers($startsWith: String) {
+query SearchUsers($startsWith: String!) {
 	users(where: { nickname: { startsWith: $startsWith } }) {
     nickname
   }

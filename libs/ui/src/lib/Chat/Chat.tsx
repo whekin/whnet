@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Box,
@@ -7,7 +7,7 @@ import {
   List,
   CircularProgress,
 } from '@mui/material';
-import { useUserAuthNickname } from '@whnet/helpers';
+import { useUserNickname } from '@whnet/context';
 
 import {
   useChatQuery,
@@ -26,7 +26,7 @@ const LOAD_MORE_MESSAGES_AMOUNT = 10;
 export const Chat = () => {
   const { chatId: id } = useParams() as { chatId: string };
 
-  const currentUserNickname = useUserAuthNickname();
+  const currentUserNickname = useUserNickname();
 
   const [containerTarget, setContainerTarget] = useState<
     HTMLElement | undefined
