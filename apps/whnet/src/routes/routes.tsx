@@ -4,12 +4,18 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useUserAuthNickname } from '@whnet/helpers';
 import { LoginPage, Chat, Ui, ChatIntroduction } from '@whnet/ui';
 
-const RequireAuth = ({ children }: { children: JSX.Element }) => {
-  const userNickname = useUserAuthNickname();
+/** Redirect to login page saving location */
+const RedirectToLoginPage = () => {
   const location = useLocation();
 
+  return <Navigate to="/login" state={{ from: location }} replace />;
+};
+
+const RequireAuth = ({ children }: { children: JSX.Element }) => {
+  const userNickname = useUserAuthNickname();
+
   if (!userNickname) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <RedirectToLoginPage />;
   }
 
   return children;
@@ -37,7 +43,7 @@ export const AppRoutes = () => (
       <Route path=":chatId" element={<Chat />} />
     </Route>
     <Route path="login" element={<LoginPage />} />
-    <Route path="*" element={<div>Not found</div>} />
+    <Route path="*" element={<Navigate to="/" replace />} />
   </Routes>
 );
 

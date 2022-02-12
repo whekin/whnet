@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import { useApolloClient } from '@apollo/client';
+import { useLocation, useNavigate, Location } from 'react-router-dom';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 import decodeJwt from 'jwt-decode';
 
@@ -10,6 +11,30 @@ export const useLogout = () => {
   return () => {
     setToken(null);
     setTimeout(() => client.resetStore(), 0);
+  };
+};
+interface StateType extends Location {
+  state:
+    | {
+        from:
+          | {
+              pathname: string | undefined;
+            }
+          | undefined;
+      }
+    | undefined;
+}
+
+export const useLogin = () => {
+  const { state } = useLocation() as StateType;
+  const navigate = useNavigate();
+  const [, setToken] = useLocalStorage<string | null>('token', null);
+
+  const from = state?.from?.pathname || '/';
+
+  return (token: string) => {
+    setToken(() => token);
+    navigate(from, { replace: true });
   };
 };
 

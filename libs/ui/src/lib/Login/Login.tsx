@@ -13,7 +13,6 @@ import { LoadingButton } from '@mui/lab';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-import { useLocalStorage } from 'usehooks-ts';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -28,6 +27,8 @@ import {
   signUpValidationSchema,
   isNicknameValidSync,
 } from '@whnet/validation';
+
+import { useLogin } from '@whnet/helpers';
 
 const CHECK_NICKNAME_EXISTANCE_DELAY = 150;
 
@@ -55,6 +56,7 @@ const getEnterText = (enterMode: EnterMode) => {
 };
 
 export const Login = () => {
+  const proceedLogin = useLogin();
   const [showPassword, setShowPassword] = useState(false);
   const [login, { loading, data, error }] = useLoginOrSignUpMutation();
   const [
@@ -63,7 +65,6 @@ export const Login = () => {
   ] = useFindUserNicknameLazyQuery();
   const [enterMode, setEnterMode] = useState(EnterMode.DEFAULT);
   const { enqueueSnackbar } = useSnackbar();
-  const [, setToken] = useLocalStorage<string | null>('token', null);
   const validationSchema =
     enterMode === EnterMode.LOGIN
       ? loginValidationSchema
@@ -90,10 +91,9 @@ export const Login = () => {
 
   useEffect(() => {
     if (data) {
-      setToken((_) => data.loginOrSignUp.token);
-      navigate('/');
+      proceedLogin(data.loginOrSignUp.token);
     }
-  }, [data, navigate, setToken]);
+  }, [data, proceedLogin]);
 
   useEffect(() => {
     if (!userData) return;
