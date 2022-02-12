@@ -22,7 +22,7 @@ export const ExistingChats = () => {
   const navigate = useNavigate();
   const { watch } = useFormContext();
 
-  const userNameStartsWith = watch('search');
+  const userNameStartsWith = watch('search', '');
 
   const { data, loading } = useUserQuery({
     variables: {
@@ -32,6 +32,7 @@ export const ExistingChats = () => {
 
   const chats = data?.user?.chats;
   const filteredChats = useMemo(() => {
+    if (!userNameStartsWith?.length) return chats;
     return chats?.filter(({ users: [{ nickname }] }) =>
       nickname.startsWith(userNameStartsWith)
     );
