@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React { useContext } from 'react';
 import { DateTime } from 'luxon';
 import {
   List,
@@ -21,7 +21,6 @@ export interface UnitedMessages {
   messages: ChatQuery['chats'][0]['messages'];
   firstMessageCreatedAt: string;
 }
-
 export interface MessageProps {
   message: UnitedMessages;
 }
@@ -35,7 +34,7 @@ const opponentMessageStyles = {
 };
 
 export const Message = ({
-  message: { firstMessageCreatedAt, userNickname, messages },
+  message: { userNickname, messages },
 }: MessageProps) => {
   const currentUserNickname = useUserNickname();
   const theme = useTheme();
@@ -74,7 +73,9 @@ export const Message = ({
             <ListItemText
               primary={content}
               secondary={
-                <Box sx={{ float: 'right' }}>{MessageSentDate(createdAt)}</Box>
+                <Box component="span" sx={{ float: 'right' }}>
+                  {MessageSentDate(createdAt)}
+                </Box>
               }
             />
           </ListItem>
