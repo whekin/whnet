@@ -21,4 +21,8 @@ fragment ChatsFrag on Chat {
     createdAt
     userNickname
   }
+  loadedAll @client
+  _count {
+    messages
+  }
 }

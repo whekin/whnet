@@ -1,17 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
-import { gql, useApolloClient } from '@apollo/client';
-import {
-  Box,
-  Grid,
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-} from '@mui/material';
-import { ArrowBack } from '@mui/icons-material';
+import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+
+import { useNewMessageSubscriptionUpdateCache } from '@whnet/helpers';
 
 import SideBar from './SideBar/SideBar';
 
@@ -31,6 +24,8 @@ const desktopLayout = (
 );
 
 export const Ui = () => {
+  useNewMessageSubscriptionUpdateCache();
+
   const theme = useTheme();
   const { chatId } = useParams();
   const wideScreen = useMediaQuery(theme.breakpoints.up('sm'));

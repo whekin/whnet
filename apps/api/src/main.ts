@@ -8,7 +8,7 @@ import expressJwt from 'express-jwt';
 import { execute, subscribe } from 'graphql';
 import { applyMiddleware } from 'graphql-middleware';
 
-import { schema, context, permissions } from './graphql';
+import { schema, context, subContext, permissions } from './graphql';
 
 const schemaWithPermissions = applyMiddleware(await schema, permissions);
 
@@ -30,10 +30,12 @@ const subscriptionServer = SubscriptionServer.create(
     execute,
     subscribe,
     onConnect(connectionParams, webSocket, ctx) {
-      // NOT IMPLEMENTED YET
-      if (connectionParams.authorization) {
-        return {};
+      if (connectionParams?.authorization) {
+        const token = connectionParams.authorization.split(' ')[1];
+
+        return subContext(token);
       }
+
       throw new Error('Missing auth token!');
     },
   },

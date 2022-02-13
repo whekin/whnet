@@ -22,4 +22,6 @@ export const UserContextProvider: React.FC = ({ children }) => {
 
 export const useUserNickname = () => useContext(UserContext).nickname;
 
-export const AppContextProvider = UserContextProvider;
+export const AppContextProvider: React.FC = ({ children }) => {
+  return <UserContextProvider>{children}</UserContextProvider>;
+};

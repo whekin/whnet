@@ -27,7 +27,7 @@ export const ExistingChats = () => {
   const { data, loading } = useChatsQuery({
     variables: {
       nickname: userNickname,
-      take: 20,
+      take: 1,
       skip: 0,
     },
   });

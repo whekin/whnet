@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useContext } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Box,
@@ -9,11 +9,7 @@ import {
 } from '@mui/material';
 import { useUserNickname } from '@whnet/context';
 
-import {
-  useChatQuery,
-  NewMessageDocument,
-  NewMessageSubscription,
-} from '@whnet/data-access';
+import { useChatQuery } from '@whnet/data-access';
 
 import AppBar from '../AppBar/AppBar';
 import Message, { UnitedMessages } from '../Message/Message';
@@ -28,43 +24,21 @@ export const Chat = () => {
 
   const currentUserNickname = useUserNickname();
 
+  const lockLoadMore = useRef(false);
+
   const [containerTarget, setContainerTarget] = useState<
     HTMLElement | undefined
   >(undefined);
-  const { loading, data, error, subscribeToMore, fetchMore } = useChatQuery({
+  const { loading, data, fetchMore } = useChatQuery({
     variables: {
       id,
-      skip: 0,
+      skip: 1,
       take: INITIAL_LOAD_MESSAGES_AMOUNT,
     },
     notifyOnNetworkStatusChange: true,
   });
 
-  const [triggerLoadMore, setTriggerLoadMore] = useState(false);
-  const [loadedAllMessages, setLoadedAllMessages] = useState(false);
-
-  useEffect(() => {
-    subscribeToMore<NewMessageSubscription>({
-      variables: { chatId: id } as any,
-      document: NewMessageDocument,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) return prev;
-
-        const { newMessage } = subscriptionData.data;
-
-        return {
-          ...prev,
-          chats: [
-            {
-              ...prev.chats[0],
-              messages: [newMessage, ...prev.chats[0].messages],
-            },
-          ],
-        };
-      },
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  const chat = data?.chats[0];
 
   const fetchMoreMessages = async () => {
     if (!data) return;
@@ -79,29 +53,6 @@ export const Chat = () => {
         skip: messages.length,
         take: LOAD_MORE_MESSAGES_AMOUNT,
       },
-      updateQuery(prev, { fetchMoreResult }) {
-        if (!fetchMoreResult) return prev;
-
-        const {
-          chats: [prevChat],
-        } = prev;
-        const prevMessages = prevChat.messages;
-        const olderMessages = fetchMoreResult.chats[0].messages;
-
-        if (olderMessages.length < LOAD_MORE_MESSAGES_AMOUNT) {
-          setLoadedAllMessages(true);
-        }
-
-        return {
-          ...prev,
-          chats: [
-            {
-              ...prevChat,
-              messages: [...prevMessages, ...olderMessages],
-            },
-          ],
-        };
-      },
     });
   };
 
@@ -109,16 +60,17 @@ export const Chat = () => {
     scrollToTop < window.innerHeight / 2;
 
   const conditionallyLoadMore = async (scrollToTop: number) => {
+    if (!chat) return;
     if (
-      !loadedAllMessages &&
-      !triggerLoadMore &&
+      !chat.loadedAll &&
+      !lockLoadMore.current &&
       loadMoreCondition(scrollToTop)
     ) {
-      setTriggerLoadMore(true);
+      lockLoadMore.current = true;
 
       await fetchMoreMessages();
 
-      setTriggerLoadMore(false);
+      lockLoadMore.current = false;
     }
   };
 
@@ -139,8 +91,6 @@ export const Chat = () => {
 
     conditionallyLoadMore(scrollToTop);
   };
-
-  const chat = data?.chats[0];
 
   const unitedMessages = useMemo(
     () =>
@@ -200,7 +150,7 @@ export const Chat = () => {
             <CircularProgress />
           </Box>
         )}
-        {loadedAllMessages && !!unitedMessages?.length && (
+        {chat?.loadedAll && !!unitedMessages?.length && (
           <>
             <Divider variant="middle" component="li" />
             <Typography

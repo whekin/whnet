@@ -1,5 +1,7 @@
 overwrite: true
-schema: 'apps/api/src/generated/schema.graphql'
+schema:
+  - 'apps/api/src/generated/schema.graphql'
+  - 'libs/data-access/localSchema.graphql'
 generates:
   libs/data-access/src/index.tsx:
     documents: 'libs/data-access/graphql/**/*.graphql'
