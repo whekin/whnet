@@ -1,14 +1,24 @@
 query Chat($id: String!, $take: Int!, $skip: Int!) {
   chats(where: { id: { equals: $id } }) {
-    id
-    users {
-      nickname
-    }
-    messages(orderBy: { createdAt: desc }, take: $take, skip: $skip) {
-      chatId
-      content
-      createdAt
-      userNickname
-    }
+    ...ChatsFrag
+  }
+}
+
+query Chats($nickname: String!, $take: Int!, $skip: Int!) {
+  chats(where: { users: { some: { nickname: { equals: $nickname } } } }) {
+    ...ChatsFrag
+  }
+}
+
+fragment ChatsFrag on Chat {
+  id
+  users {
+    nickname
+  }
+  messages(orderBy: { createdAt: desc }, take: $take, skip: $skip) {
+    chatId
+    content
+    createdAt
+    userNickname
   }
 }

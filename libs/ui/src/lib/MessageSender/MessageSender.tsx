@@ -1,37 +1,52 @@
-import React, { useState } from 'react';
-import {
-  IconButton,
-  InputBase,
-  Paper,
-  Divider,
-  CircularProgress,
-} from '@mui/material';
+import React, { useMemo } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { IconButton, InputBase, Paper, Divider } from '@mui/material';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import SendIcon from '@mui/icons-material/Send';
 
 import { useSendMessageMutation } from '@whnet/data-access';
 
+interface FormValues {
+  message: string;
+}
 export interface MessageSenderProps {
   chatId: string;
 }
 
 export const MessageSender = ({ chatId }: MessageSenderProps) => {
-  const [message, setMessage] = useState('');
-  const [sendMessage, { loading, data, error }] = useSendMessageMutation({
-    refetchQueries: ['Chat'],
-    onCompleted() {
-      setMessage('');
-    },
-  });
+  const { register, handleSubmit, reset, watch } = useForm<FormValues>();
+  const [sendMessage, { error }] = useSendMessageMutation();
 
-  const handleSubmit = (event: any) => {
-    event.preventDefault();
+  const messageValue = watch('message', '');
+
+  const formatMessage = (message: string): string => {
+    return message.trim();
+  };
+
+  const isSendable = useMemo(() => {
+    return !!formatMessage(messageValue).length;
+  }, [messageValue]);
+
+  const onSubmit: SubmitHandler<FormValues> = ({ message: rawMessage }) => {
+    const message = formatMessage(rawMessage);
+
+    if (!message.length) return;
+
+    reset({ message: '' });
+
     sendMessage({
       variables: {
         chatId,
         content: message,
       },
     });
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      handleSubmit(onSubmit)();
+    }
   };
 
   return (
@@ -46,7 +61,7 @@ export const MessageSender = ({ chatId }: MessageSenderProps) => {
         alignSelf: 'center',
         alignItems: 'center',
       }}
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <IconButton sx={{ p: '10px' }} aria-label="menu">
         <InsertEmoticonIcon />
@@ -54,24 +69,20 @@ export const MessageSender = ({ chatId }: MessageSenderProps) => {
       <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
       <InputBase
         sx={{ ml: 1, flex: 1 }}
-        value={message}
         placeholder="Input message here"
         inputProps={{ 'aria-label': 'send message' }}
-        onChange={({ target: { value } }) => setMessage(value)}
+        onKeyDown={handleKeyDown}
         multiline
+        {...register('message')}
       />
-      {loading ? (
-        <CircularProgress size={20} />
-      ) : (
-        <IconButton
-          disabled={message.length === 0}
-          type="submit"
-          sx={{ p: '10px' }}
-          aria-label="send"
-        >
-          <SendIcon />
-        </IconButton>
-      )}
+      <IconButton
+        disabled={!isSendable}
+        type="submit"
+        sx={{ p: '10px' }}
+        aria-label="send"
+      >
+        <SendIcon />
+      </IconButton>
     </Paper>
   );
 };

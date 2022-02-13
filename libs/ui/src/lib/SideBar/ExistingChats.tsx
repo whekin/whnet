@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { AccountCircle } from '@mui/icons-material';
 
-import { useUserQuery } from '@whnet/data-access';
+import { useChatsQuery } from '@whnet/data-access';
 import { useUserNickname } from '@whnet/context';
 
 import ChatPreviewLastMessage from './ChatPreviewLastMessage';
@@ -24,13 +24,15 @@ export const ExistingChats = () => {
 
   const userNameStartsWith = watch('search', '');
 
-  const { data, loading } = useUserQuery({
+  const { data, loading } = useChatsQuery({
     variables: {
       nickname: userNickname,
+      take: 20,
+      skip: 0,
     },
   });
 
-  const chats = data?.user?.chats;
+  const chats = data?.chats;
   const filteredChats = useMemo(() => {
     if (!userNameStartsWith?.length) return chats;
     return chats?.filter(({ users: [{ nickname }] }) =>
@@ -42,25 +44,33 @@ export const ExistingChats = () => {
 
   return (
     <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-      {filteredChats?.map((chat) => (
-        <div key={chat.id}>
-          <ListItemButton
-            alignItems="flex-start"
-            onClick={() => navigate(`/chats/${chat.id}`)}
-          >
-            <ListItemAvatar>
-              <Avatar>
-                <AccountCircle />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary={chat.users[0].nickname}
-              secondary={<ChatPreviewLastMessage chat={chat} />}
-            />
-          </ListItemButton>
-          <Divider variant="inset" component="li" />
-        </div>
-      ))}
+      {filteredChats?.map((chat) => {
+        const { id, users } = chat;
+
+        const [{ nickname: opponent }] = users.filter(
+          ({ nickname }) => nickname !== userNickname
+        );
+
+        return (
+          <div key={id}>
+            <ListItemButton
+              alignItems="flex-start"
+              onClick={() => navigate(`/chats/${id}`)}
+            >
+              <ListItemAvatar>
+                <Avatar>
+                  <AccountCircle />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary={opponent}
+                secondary={<ChatPreviewLastMessage chat={chat} />}
+              />
+            </ListItemButton>
+            <Divider variant="inset" component="li" />
+          </div>
+        );
+      })}
     </List>
   );
 };

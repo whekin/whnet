@@ -159,7 +159,6 @@ export const Login = () => {
           id="filled-adornment-nickname"
           type="text"
           error={!!errors['nickname']}
-          // eslint-disable-next-line react/jsx-props-no-spreading
           {...register('nickname')}
           required
           endAdornment={
@@ -182,7 +181,6 @@ export const Login = () => {
           type={showPassword ? 'text' : 'password'}
           autoComplete="current-password"
           error={!!errors['password']}
-          // eslint-disable-next-line react/jsx-props-no-spreading
           {...register('password')}
           required
           endAdornment={
@@ -213,7 +211,6 @@ export const Login = () => {
             type={showPassword ? 'text' : 'password'}
             autoComplete="current-password"
             error={!!errors['confirmPassword']}
-            // eslint-disable-next-line react/jsx-props-no-spreading
             {...register('confirmPassword')}
             required
             endAdornment={

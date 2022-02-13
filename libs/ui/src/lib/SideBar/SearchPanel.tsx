@@ -20,7 +20,6 @@ export const SearchPanel = () => {
         sx={{ ml: 1, flex: 1 }}
         placeholder="Search users"
         inputProps={{ 'aria-label': 'search users' }}
-        // eslint-disable-next-line react/jsx-props-no-spreading
         {...register('search')}
       />
     </Paper>

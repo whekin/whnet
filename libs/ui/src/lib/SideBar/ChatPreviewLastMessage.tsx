@@ -1,10 +1,10 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 
-import { UserQuery } from '@whnet/data-access';
+import { ChatsQuery } from '@whnet/data-access';
 
 export interface ChatPreviewLastMessageProps {
-  chat: NonNullable<UserQuery['user']>['chats'][0];
+  chat: ChatsQuery['chats'][0];
 }
 
 export const ChatPreviewLastMessage = ({
