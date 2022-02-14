@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { DateTime } from 'luxon';
 import { IconButton, InputBase, Paper, Divider } from '@mui/material';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import SendIcon from '@mui/icons-material/Send';
@@ -15,7 +16,7 @@ export interface MessageSenderProps {
 
 export const MessageSender = ({ chatId }: MessageSenderProps) => {
   const { register, handleSubmit, reset, watch } = useForm<FormValues>();
-  const [sendMessage, { error }] = useSendMessageMutation();
+  const [sendMessage, { error, client }] = useSendMessageMutation();
 
   const messageValue = watch('message', '');
 
@@ -33,6 +34,13 @@ export const MessageSender = ({ chatId }: MessageSenderProps) => {
     if (!message.length) return;
 
     reset({ message: '' });
+
+    client.cache.modify({
+      id: `Chat:${chatId}`,
+      fields: {
+        updatedAt: () => DateTime.now().toUTC().toISO(),
+      },
+    });
 
     sendMessage({
       variables: {

@@ -35,7 +35,7 @@ const GlobalSearchFoundUsers = () => {
       navigate(`/chats/${id}`);
       reset();
     },
-    refetchQueries: ['User'],
+    refetchQueries: ['Chats'],
   });
 
   useEffect(() => {

@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFormContext } from 'react-hook-form';
+import { DateTime } from 'luxon';
 import {
   Divider,
   List,
@@ -33,12 +34,26 @@ export const ExistingChats = () => {
   });
 
   const chats = data?.chats;
-  const filteredChats = useMemo(() => {
-    if (!userNameStartsWith?.length) return chats;
-    return chats?.filter(({ users: [{ nickname }] }) =>
-      nickname.startsWith(userNameStartsWith)
-    );
-  }, [userNameStartsWith, chats]);
+  const filteredChats = useMemo<typeof chats>(() => {
+    if (!userNameStartsWith?.length)
+      return chats?.slice().sort((chat1, chat2) => {
+        const { updatedAt: updatedAt1 } = chat1;
+        const { updatedAt: updatedAt2 } = chat2;
+
+        const a = DateTime.fromISO(updatedAt1);
+        const b = DateTime.fromISO(updatedAt2);
+
+        return b.valueOf() - a.valueOf();
+      });
+
+    return chats?.filter(({ users }) => {
+      const openedChatOpponentNickname = users.filter(
+        ({ nickname }) => nickname !== userNickname
+      )[0].nickname;
+
+      return openedChatOpponentNickname.startsWith(userNameStartsWith);
+    });
+  }, [userNameStartsWith, userNickname, chats]);
 
   if (loading) return <ChatsSkeleton amount={5} />;
 
