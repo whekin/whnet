@@ -13,9 +13,32 @@ import { useTheme } from '@mui/material/styles';
 import { ChatQuery } from '@whnet/data-access';
 import { useUserNickname } from '@whnet/context';
 
-const MessageSentDate = (createdAt: string) => (
-  <time dateTime={createdAt}>{DateTime.fromISO(createdAt).toRelative()}</time>
-);
+const MessageSentDate = ({ createdAt }: { createdAt: string }) => {
+  const date = DateTime.fromISO(createdAt);
+
+  let dateToShow = date.toLocaleString({
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  });
+
+  const now = DateTime.now();
+
+  if (now.hasSame(date, 'minute')) dateToShow = 'just now';
+  else if (now.hasSame(date, 'week')) dateToShow = date.toRelative()!;
+
+  return <time dateTime={createdAt}>{dateToShow}</time>;
+};
+
+const MessageGroupSentDay = ({ createdAt }: { createdAt: string }) => {
+  const day = DateTime.fromISO(createdAt).toLocaleString({
+    weekday: 'long',
+    month: 'long',
+    day: '2-digit',
+  });
+
+  return <time dateTime={createdAt}>{day}</time>;
+};
 export interface UnitedMessages {
   userNickname: string;
   messages: ChatQuery['chats'][0]['messages'];
@@ -34,7 +57,7 @@ const opponentMessageStyles = {
 };
 
 export const Message = ({
-  message: { userNickname, messages },
+  message: { userNickname, messages, firstMessageCreatedAt },
 }: MessageProps) => {
   const currentUserNickname = useUserNickname();
   const theme = useTheme();
@@ -52,7 +75,10 @@ export const Message = ({
             justifyContent: isAttachedRight ? 'end' : 'start',
           }}
         >
-          {userNickname}
+          <span>
+            {userNickname} |&nbsp;
+            <MessageGroupSentDay createdAt={firstMessageCreatedAt} />
+          </span>
         </ListSubheader>
       }
       sx={{
@@ -74,7 +100,7 @@ export const Message = ({
               primary={content}
               secondary={
                 <Box component="span" sx={{ float: 'right' }}>
-                  {MessageSentDate(createdAt)}
+                  <MessageSentDate createdAt={createdAt} />
                 </Box>
               }
             />

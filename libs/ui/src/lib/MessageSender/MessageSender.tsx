@@ -1,7 +1,13 @@
 import React, { useMemo } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { DateTime } from 'luxon';
-import { IconButton, InputBase, Paper, Divider } from '@mui/material';
+import {
+  IconButton,
+  InputBase,
+  Paper,
+  Divider,
+  CircularProgress,
+} from '@mui/material';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import SendIcon from '@mui/icons-material/Send';
 
@@ -16,7 +22,7 @@ export interface MessageSenderProps {
 
 export const MessageSender = ({ chatId }: MessageSenderProps) => {
   const { register, handleSubmit, reset, watch } = useForm<FormValues>();
-  const [sendMessage, { error, client }] = useSendMessageMutation();
+  const [sendMessage, { loading, error, client }] = useSendMessageMutation();
 
   const messageValue = watch('message', '');
 
@@ -83,14 +89,18 @@ export const MessageSender = ({ chatId }: MessageSenderProps) => {
         multiline
         {...register('message')}
       />
-      <IconButton
-        disabled={!isSendable}
-        type="submit"
-        sx={{ p: '10px' }}
-        aria-label="send"
-      >
-        <SendIcon />
-      </IconButton>
+      {loading ? (
+        <CircularProgress size={25} sx={{ mr: 1 }} />
+      ) : (
+        <IconButton
+          disabled={!isSendable}
+          type="submit"
+          sx={{ p: 1 }}
+          aria-label="send"
+        >
+          <SendIcon />
+        </IconButton>
+      )}
     </Paper>
   );
 };
