@@ -6,7 +6,7 @@
     "start": "node dist/apps/api/main.js",
     "dev-full": "nx run-many --target=serve --all --parallel",
     "dev": "nx serve",
-    "build": "yarn nx build api && yarn nx build whnet",
+    "build": "yarn nx run-many --target=generate-gql --all && yarn nx build api && yarn nx build whnet",
     "test": "nx test",
     "seed": "ts-node --project ./tsconfig.base.json --compiler-options '{\"module\":\"CommonJS\"}' --transpile-only libs/prisma-client/prisma/seed.ts",
     "generate-gql": "nx affected --target=generate-gql"
