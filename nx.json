@@ -28,6 +28,12 @@
         "target": "build",
         "projects": "dependencies"
       }
+    ],
+    "generate-gql": [
+      {
+        "target": "generate-gql",
+        "projects": "dependencies"
+      }
     ]
   },
   "generators": {
