@@ -7,6 +7,7 @@ import * as express from 'express';
 import expressJwt from 'express-jwt';
 import { execute, subscribe } from 'graphql';
 import { applyMiddleware } from 'graphql-middleware';
+import * as path from 'path';
 
 import { schema, context, subContext, permissions } from './graphql';
 
@@ -60,6 +61,16 @@ const apolloServer = new ApolloServer({
 
 await apolloServer.start();
 apolloServer.applyMiddleware({ app });
+
+if (process.env.NODE_ENV === 'production') {
+  const CLIENT_BUILD_PATH = path.join(__dirname, '../whnet');
+
+  app.use(express.static(CLIENT_BUILD_PATH));
+
+  app.get('*', (request, response) => {
+    response.sendFile(path.join(CLIENT_BUILD_PATH, 'index.html'));
+  });
+}
 
 const port = process.env.PORT;
 

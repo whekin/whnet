@@ -40,3 +40,5 @@ Thumbs.db
 
 # Other
 .env
+.env.local
+.env.production

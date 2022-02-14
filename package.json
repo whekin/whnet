@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "nx serve",
-    "start-full": "nx run-many --target=serve --all --parallel",
-    "build": "nx build",
+    "start": "node dist/apps/api/main.js",
+    "dev-full": "nx run-many --target=serve --all --parallel",
+    "dev": "nx serve",
+    "build": "yarn nx build api && yarn nx build whnet",
     "test": "nx test",
     "seed": "ts-node --project ./tsconfig.base.json --compiler-options '{\"module\":\"CommonJS\"}' --transpile-only libs/prisma-client/prisma/seed.ts",
     "generate-gql": "nx affected --target=generate-gql"
@@ -94,7 +95,7 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "jest": "27.4.7",
     "prettier": "^2.3.1",
-    "prisma": "^3.8.1",
+    "prisma": "3.8.1",
     "react-test-renderer": "17.0.2",
     "ts-jest": "27.1.3",
     "ts-node": "^10.4.0",
