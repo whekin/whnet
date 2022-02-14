@@ -9,7 +9,7 @@
     "build": "yarn generate-gql && yarn nx build api && yarn nx build whnet",
     "test": "nx test",
     "seed": "ts-node --project ./tsconfig.base.json --compiler-options '{\"module\":\"CommonJS\"}' --transpile-only libs/prisma-client/prisma/seed.ts",
-    "generate-gql": "nx affected --target=generate-gql"
+    "generate-gql": "nx run-many --target=generate-gql --all"
   },
   "private": true,
   "dependencies": {
