@@ -41,12 +41,19 @@ export class MessageResolver {
       const message = await ctx.prisma.message.create({
         data: {
           content,
-          chatId,
           userNickname: currentNickname,
+          chatId,
         },
       });
 
       await pubSub.publish('MESSAGES', message);
+
+      await ctx.prisma.chat.update({
+        where: { id: chatId },
+        data: {
+          updatedAt: new Date(),
+        },
+      });
 
       return message;
     }

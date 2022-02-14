@@ -5,7 +5,10 @@ query Chat($id: String!, $take: Int!, $skip: Int!) {
 }
 
 query Chats($nickname: String!, $take: Int!, $skip: Int!) {
-  chats(where: { users: { some: { nickname: { equals: $nickname } } } }) {
+  chats(
+    where: { users: { some: { nickname: { equals: $nickname } } } }
+    orderBy: { updatedAt: desc }
+  ) {
     ...ChatsFrag
   }
 }

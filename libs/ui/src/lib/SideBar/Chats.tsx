@@ -14,10 +14,7 @@ export const Chats = () => {
   const methods = useForm<FormValues>();
   return (
     <Box>
-      <FormProvider
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        {...methods}
-      >
+      <FormProvider {...methods}>
         <SearchPanel />
         <ExistingChats />
         <GlobalSearchFoundUsers />
