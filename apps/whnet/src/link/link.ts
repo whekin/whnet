@@ -12,7 +12,7 @@ const httpLink = createHttpLink({
 });
 
 const wsLink = new WebSocketLink({
-  uri: 'ws://localhost:3333/graphql',
+  uri: process.env['NX_GRAPHQL_SUBSCRIPTIONS_ENDPOINT_URI']!,
   options: {
     reconnect: true,
     connectionParams: {
