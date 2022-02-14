@@ -119,7 +119,13 @@ export const Chat = () => {
   )[0].nickname;
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: 'calc(var(--vh, 1vh)*100)',
+      }}
+    >
       <Box sx={{ display: { sm: 'none' } }}>
         <AppBar nickname={openedChatOpponentNickname || 'Loading chat...'} />
       </Box>
