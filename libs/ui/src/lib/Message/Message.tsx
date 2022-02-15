@@ -72,7 +72,7 @@ export const Message = ({
           disableSticky={isMobile}
           sx={{
             display: 'flex',
-            justifyContent: isAttachedRight ? 'end' : 'start',
+            justifyContent: isAttachedRight ? 'flex-end' : 'flex-start',
           }}
         >
           <span>
@@ -84,7 +84,7 @@ export const Message = ({
       sx={{
         width: 'fit-content',
         maxWidth: '80%',
-        alignSelf: isAttachedRight ? 'end' : 'start',
+        alignSelf: isAttachedRight ? 'flex-end' : 'flex-start',
       }}
     >
       <Box
