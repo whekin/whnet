@@ -10,8 +10,8 @@ generator typegraphql {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider = "postgres"
+  url      = env("HEROKU_POSTGRESQL_PUCE_URL")
 }
 
 model User {
