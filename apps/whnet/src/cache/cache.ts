@@ -26,8 +26,12 @@ const apolloCache = new InMemoryCache({
               return [...incoming, ...existing];
             }
 
+            // This happens when sidebar loads last message
+            // first and then chat loads it again. Hence
+            // there is only one existing message that we
+            // just replace here with new messages;
             if (incomingFirst.equals(existingFirst)) {
-              return [...existing];
+              return [...incoming];
             }
 
             return [...existing, ...incoming];
