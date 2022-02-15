@@ -5,14 +5,15 @@ export const theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: `
         html, body {
-          overflow: hidden;
+          width: 100%;
         }
         html {
-          height: -webkit-fill-available;
+          overflow: hidden;
         }
         body {
+          position: fixed;
+          overflow-y: scroll;
           -webkit-overflow-scrolling: touch;
-          height: calc(var(--vh, 1vh)*100)
         }
       `,
     },
