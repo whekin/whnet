@@ -22,6 +22,11 @@ export const useNewMessageSubscriptionUpdateCache = () => {
         fragment: ChatsFragFragmentDoc,
       }) as ChatsFragFragment;
 
+      if (!prev) {
+        client.refetchQueries({ include: ['Chats'] });
+        return;
+      }
+
       client.writeFragment({
         id: cacheId,
         fragment: ChatsFragFragmentDoc,
