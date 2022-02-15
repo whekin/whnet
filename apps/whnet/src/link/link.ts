@@ -15,9 +15,9 @@ const wsLink = new WebSocketLink({
   uri: process.env['NX_GRAPHQL_SUBSCRIPTIONS_ENDPOINT_URI']!,
   options: {
     reconnect: true,
-    connectionParams: {
+    connectionParams: () => ({
       authorization: getBearerToken(),
-    },
+    }),
   },
 });
 
