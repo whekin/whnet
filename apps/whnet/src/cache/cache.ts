@@ -26,6 +26,10 @@ const apolloCache = new InMemoryCache({
               return [...incoming, ...existing];
             }
 
+            if (incomingFirst.equals(existingFirst)) {
+              return [...existing];
+            }
+
             return [...existing, ...incoming];
           },
         },

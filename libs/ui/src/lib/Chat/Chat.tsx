@@ -32,7 +32,7 @@ export const Chat = () => {
   const { loading, data, fetchMore } = useChatQuery({
     variables: {
       id,
-      skip: 1,
+      skip: 0,
       take: INITIAL_LOAD_MESSAGES_AMOUNT,
     },
     notifyOnNetworkStatusChange: true,
