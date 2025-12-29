@@ -11,7 +11,7 @@ generator typegraphql {
 
 datasource db {
   provider = "postgres"
-  url      = env("HEROKU_POSTGRESQL_PUCE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model User {
